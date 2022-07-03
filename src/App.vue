@@ -1,16 +1,53 @@
-<script setup lang="ts"></script>
-
 <template>
-  <router-view></router-view>
+  <div id="app">
+    <Sidebar />
+    <router-view></router-view>
+  </div>
 </template>
+
+<script setup lang="ts">
+import Sidebar from "@/components/Sidebar.vue";
+</script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: stretch;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#app {
+  height: 100%;
+}
+body {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background-color: #eee;
+}
+a {
+  text-decoration: none;
+
+  color: #444;
+}
+ul,
+li {
+  list-style: none;
+}
+.btn {
+  color: #666;
+  font-size: 12px;
+  padding: 2px 4px;
+  background-color: #fff;
+  box-shadow: 0px 0px 2px 0px #ccc;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
 }
 </style>
