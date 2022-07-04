@@ -13,8 +13,20 @@
 
 <script lang="ts" setup>
 import Avatar from "@/components/Avatar.vue";
+import Api from "@/api/index";
+import { useRouter } from "vue-router";
 
-function onLogout() {}
+const router = useRouter();
+
+function onLogout() {
+  Api.logout()
+    .then(res => {
+      router.push({ path: "login" });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
 </script>
 
 <style lang="scss" scoped>

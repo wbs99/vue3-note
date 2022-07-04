@@ -53,10 +53,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref, toRefs } from "vue";
+import Api from "@/api/index";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 const isShowLogin = ref(true);
 const isShowRegister = ref(false);
-
 const login = reactive({
   username: "",
   password: "",
@@ -74,7 +78,6 @@ function showLogin() {
   isShowLogin.value = true;
   isShowRegister.value = false;
 }
-
 function showRegister() {
   isShowLogin.value = false;
   isShowRegister.value = true;
@@ -94,6 +97,19 @@ function onRegister() {
   }
   register.isError = false;
   register.notice = "";
+  Api.register({
+    username: register.username,
+    password: register.password,
+  })
+    .then(res => {
+      register.isError = false;
+      register.notice = "";
+      router.push({ path: "notebooks" });
+    })
+    .catch(error => {
+      register.isError = true;
+      register.notice = error.msg;
+    });
 }
 function onLogin() {
   const result = validUsername(login.username);
@@ -108,8 +124,19 @@ function onLogin() {
     login.notice = result2.notice;
     return;
   }
+
   login.isError = false;
   login.notice = "";
+  Api.login({ username: login.username, password: login.password })
+    .then(res => {
+      login.isError = false;
+      login.notice = "";
+      router.push({ path: "notebooks" });
+    })
+    .catch(error => {
+      login.isError = true;
+      login.notice = error.msg;
+    });
 }
 function validUsername(username: string) {
   return {
@@ -123,6 +150,9 @@ function validPassword(password: string) {
     notice: "密码长度为6~16个字符",
   };
 }
+onMounted(() => {
+  Api.isLogin();
+});
 </script>
 
 <style lang="scss" scoped>
