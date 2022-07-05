@@ -21,11 +21,9 @@ const router = useRouter();
 function onLogout() {
   Api.logout()
     .then(res => {
-      router.push({ path: "login" });
+      router.push({ path: "/login" });
     })
-    .catch(error => {
-      console.log(error);
-    });
+    .catch(error => {});
 }
 </script>
 

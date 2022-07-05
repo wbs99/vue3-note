@@ -13,7 +13,7 @@ function login(data: LoginAndRegisterParams) {
   return request({ url: "/auth/login", method: "post", data });
 }
 
-function isLogin() {
+function getInfo() {
   return request({ url: "/auth", method: "get" });
 }
 
@@ -24,7 +24,7 @@ function logout() {
 const ApiObj = {
   login,
   register,
-  isLogin,
+  getInfo,
   logout,
 };
 

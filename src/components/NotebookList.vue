@@ -1,6 +1,5 @@
 <template>
   <div id="login">
-    <h1>{{ pageName }}</h1>
     <ul>
       <li><router-link to="/note/1">笔记本1</router-link></li>
       <li><router-link to="/note/2">笔记本2</router-link></li>
@@ -9,9 +8,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import Api from "@/api/index";
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-const pageName = ref("这是Notebooks 页面");
+const router = useRouter();
+onMounted(() => {
+  getUserInfo();
+});
+
+function getUserInfo() {
+  Api.getInfo().then(res => {
+    if (!res.data.isLogin) {
+      router.push({ path: "/login" });
+    }
+  });
+}
 </script>
 
 <style lang="scss" scoped>

@@ -56,6 +56,11 @@
 import { onMounted, reactive, ref, toRefs } from "vue";
 import Api from "@/api/index";
 import { useRouter } from "vue-router";
+import bus from "vue3-eventbus";
+
+onMounted(() => {
+  Api.getInfo();
+});
 
 const router = useRouter();
 
@@ -104,7 +109,8 @@ function onRegister() {
     .then(res => {
       register.isError = false;
       register.notice = "";
-      router.push({ path: "notebooks" });
+      bus.emit("userInfo", { username: register.username });
+      router.push({ path: "/notebooks" });
     })
     .catch(error => {
       register.isError = true;
@@ -124,14 +130,14 @@ function onLogin() {
     login.notice = result2.notice;
     return;
   }
-
   login.isError = false;
   login.notice = "";
   Api.login({ username: login.username, password: login.password })
     .then(res => {
       login.isError = false;
       login.notice = "";
-      router.push({ path: "notebooks" });
+      bus.emit("userInfo", { username: login.username });
+      router.push({ path: "/notebooks" });
     })
     .catch(error => {
       login.isError = true;
@@ -150,9 +156,6 @@ function validPassword(password: string) {
     notice: "密码长度为6~16个字符",
   };
 }
-onMounted(() => {
-  Api.isLogin();
-});
 </script>
 
 <style lang="scss" scoped>

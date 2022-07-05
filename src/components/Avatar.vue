@@ -1,13 +1,35 @@
 <template>
-  <span :title="user.username">{{ slug }}</span>
+  <span>{{ slug }}</span>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import Api from "@/api/index";
+import { ref, computed, onMounted } from "vue";
+import bus from "vue3-eventbus";
 
-const user = reactive({ username: "hunger" });
+onMounted(() => {
+  bus.on("userInfo", user => {
+    username.value = user.username;
+  });
+  getUserInfo();
+});
 
-const slug = ref("H");
+const username = ref("未登录");
+const slug = computed(() => {
+  if (username.value !== undefined) {
+    return username.value.charAt(0);
+  } else {
+    return "未";
+  }
+});
+
+function getUserInfo() {
+  Api.getInfo().then(res => {
+    if (res.data.isLogin) {
+      username.value = res.data.username;
+    }
+  });
+}
 </script>
 
 <style lang="scss" scoped>
